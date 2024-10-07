@@ -8,7 +8,10 @@ import https from 'https';
 import { loadCertificate } from './middlewares/certificat.middleware';
 import { config } from './config/config';
 import session from 'express-session';
-import fs from "fs";
+import fs from "fs/promises";
+import { IProduct } from './interfaces/product.interface';
+import { Product } from './models/product.model';
+import { randomInt } from 'crypto';
 
 const app = express();
 // Middleware de parsing du JSON
@@ -54,40 +57,44 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/', productRoutes);
 
-app.use('/api/users', userRoutes);
-app.use('/api/products', productRoutes);
-
 app.use(errorMiddleware);
 
 // Fetch les produits fictifs
 async function populateProducts() {
   const url = "https://fakestoreapi.com/products/"
   const fileToPopulate = "json/products.json"
+  let isFileEmpty = false
 
-  let isFileEmpty = false; 
-  // Check pour ne pas overwrite
-  fs.readFile(fileToPopulate, (err, file) => {
-    file.length == 0 ? isFileEmpty = true : isFileEmpty = false
-  })
-
+  const data = await fs.readFile("json/products.json", "utf-8");
+  if (data.length == 0) {
+    isFileEmpty = true
+  }
+  // Mapping pour prendre seulement les données requis
+  // Quantity est random pour chaque produit, le fakestoreapi ne contient pas de property pour quantity
   if (isFileEmpty) {
     try {
       const response = await fetch(url);
       const value = await response.json();
-      const jsonString = JSON.stringify(value)
-      fs.writeFile(fileToPopulate, jsonString, err => {
-        if (err) {
-          console.log('Erreur lors de la population', err)
-        } else {
-            console.log('Population de products.json succès')
-        }
-      })
+      const products: IProduct[] = value.map((item: any) => {
+        return new Product(
+            item.id,
+            item.title,
+            item.description,
+            item.category,
+            randomInt(100),
+            item.price
+          );
+        });
+
+      fs.writeFile(fileToPopulate, JSON.stringify(products, null, 2))
+      console.log("Products.json populé!")
     } catch (error) {
       console.log(error) 
     }
   } else {
     console.log("Products.json déja populé")
   }
+
 }
 populateProducts();
 
