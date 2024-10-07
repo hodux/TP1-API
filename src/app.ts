@@ -52,7 +52,7 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello, TypeScript with Express! Connexion sécurisée.');
 });
 
-app.use('/products', productRoutes);
+app.use('/', productRoutes);
 
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
@@ -60,25 +60,36 @@ app.use('/api/products', productRoutes);
 app.use(errorMiddleware);
 
 // Fetch les produits fictifs
-async function populateProduits() {
+async function populateProducts() {
   const url = "https://fakestoreapi.com/products/"
-  const fileToPopulate = "products.json"
-  try {
-    const response = await fetch(url);
-    const value = await response.json();
-    const jsonString = JSON.stringify(value)
-    fs.writeFile(fileToPopulate, jsonString, err => {
-      if (err) {
-        console.log('Erreur lors de la population', err)
-      } else {
-          console.log('Population de products.json succès')
-      }
-    })
-  } catch (error) {
-    console.log(error) 
+  const fileToPopulate = "json/products.json"
+
+  let isFileEmpty = false; 
+  // Check pour ne pas overwrite
+  fs.readFile(fileToPopulate, (err, file) => {
+    file.length == 0 ? isFileEmpty = true : isFileEmpty = false
+  })
+
+  if (isFileEmpty) {
+    try {
+      const response = await fetch(url);
+      const value = await response.json();
+      const jsonString = JSON.stringify(value)
+      fs.writeFile(fileToPopulate, jsonString, err => {
+        if (err) {
+          console.log('Erreur lors de la population', err)
+        } else {
+            console.log('Population de products.json succès')
+        }
+      })
+    } catch (error) {
+      console.log(error) 
+    }
+  } else {
+    console.log("Products.json déja populé")
   }
 }
-populateProduits();
+populateProducts();
 
 const httpApp = https.createServer(certificatOptions, app);
 

@@ -8,4 +8,16 @@ export class ProductController {
         res.json(products); 
     }
 
+    public static async addProduct(req: Request, res: Response) {
+        try {
+            
+            const newProduct = req.body; 
+            await ProductService.addProduct(newProduct); 
+            res.status(201).json({ message: 'Succès ajout product' }); 
+
+        } catch (error) {
+            res.status(500).json({ message: 'Erreur ajout product', error });
+        }
+    }
+    
 }
