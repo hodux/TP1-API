@@ -3,25 +3,22 @@ import { ProductController } from '../controllers/product.controller';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { User } from '../interfaces/user.interface';
+import { UserModel } from '../models/user.model';
 
 const router = Router();
 
-const users: User[] = []; // Simuler une base de données en mémoire
+const newUser = new UserModel(
+    1,                       
+    'John Doe',               
+    'john.doe@example.com',   
+    'john_doe',               
+    '$2a$12$6IXVSpF/axEflfXJA6MOruFReKlWEbkebqf.xiVleM2VrESpvHcvy',
+    'manager'                   
+  );
 
-router.post('/register', async (req, res) => {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const user: User = { 
-        id: req.body.id,
-        name: req.body.name, 
-        email: req.body.email, 
-        username: req.body.username, 
-        password: hashedPassword 
-    };
-    users.push(user);
-    res.status(201).send('Utilisateur enregistré');
-});
+const users: User[] = [newUser]; // Simuler une base de données en mémoire
 
-router.post('/login', async (req, res) => {
+router.post('/users/login', async (req, res) => {
     const user = users.find(user => user.username === req.body.username);
     if (user && await bcrypt.compare(req.body.password, user.password)) {
         const accessToken = jwt.sign({ username: user.username }, 'SECRET_KEY', 

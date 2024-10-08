@@ -1,5 +1,4 @@
 import express, { Request, Response, NextFunction } from 'express';
-import userRoutes from './routes/user.route';
 import productRoutes from './routes/product.route';
 import { errorMiddleware } from './middlewares/error.middleware';
 import swaggerJsdoc from 'swagger-jsdoc';
@@ -12,6 +11,7 @@ import fs from "fs/promises";
 import { IProduct } from './interfaces/product.interface';
 import { Product } from './models/product.model';
 import { randomInt } from 'crypto';
+import authRoutes from './routes/auth.route'
 
 const app = express();
 // Middleware de parsing du JSON
@@ -46,7 +46,6 @@ const swaggerDocs = swaggerJsdoc(swaggerOptions);
 // Charger les certificats
 let certificatOptions = loadCertificate();
 
-
 // Servir la documentation Swagger via '/api-docs'
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
@@ -56,6 +55,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/', productRoutes);
+app.use("/", authRoutes);
 
 app.use(errorMiddleware);
 
