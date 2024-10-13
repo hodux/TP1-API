@@ -1,10 +1,7 @@
-// import { Router } from 'express';
-// import { UserController } from '../controllers/user.controller';
-// import { roleMiddleware } from '../middlewares/roles.middleware';
-// import { verifyToken } from '../middlewares/auth.middleware';
+import { Router } from 'express';
+import { UserController } from '../controllers/user.controller';
 
-// const router = Router();
-// const userController = new UserController();
+const router = Router();
 
 // /**
 //  * @swagger
@@ -32,8 +29,6 @@
 //  *                     type: string
 //  *                     example : john.doe@example.com
 //  */
-// router.get('/users', userController.getAllUsers);
+router.get('/users', UserController.getAllUsers);
 
-// router.get('/admin', verifyToken, roleMiddleware(['admin']), UserController.getAdminData);
-
-// export default router;
+export default router;

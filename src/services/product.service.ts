@@ -4,12 +4,9 @@ import fs from "fs/promises";
 export class ProductService {
 
     public static async getAllProducts(): Promise<IProduct[]> {
-        
         const data = await fs.readFile("json/products.json", "utf-8");
         const result = JSON.parse(data); 
-
         return result;
-
     }
 
     public static async addProduct(newProduct: IProduct): Promise<void> {
@@ -20,7 +17,6 @@ export class ProductService {
         newProduct.id = result.length + 1;
 
         result.push(newProduct);
-
         await fs.writeFile("json/products.json", JSON.stringify(result, null, 2));
     }
 
@@ -29,7 +25,7 @@ export class ProductService {
         const result = JSON.parse(data);
 
         if (!newProduct) {
-            throw { status: 400 }; // Validation error
+            throw { status: 400 };
         }
 
         try {

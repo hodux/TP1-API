@@ -12,6 +12,11 @@ import { IProduct } from './interfaces/product.interface';
 import { Product } from './models/product.model';
 import { randomInt } from 'crypto';
 import authRoutes from './routes/auth.route'
+import userRoutes from './routes/user.route'
+import { User } from './interfaces/user.interface';
+import { UserModel } from './models/user.model';
+import bcrypt from 'bcryptjs';
+import { logger } from './utils/logger.ts'
 
 const app = express();
 // Middleware de parsing du JSON
@@ -47,7 +52,7 @@ const swaggerDocs = swaggerJsdoc(swaggerOptions);
 let certificatOptions = loadCertificate();
 
 // Servir la documentation Swagger via '/api-docs'
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/v1', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Route de base
 app.get('/', (req: Request, res: Response) => {
@@ -55,7 +60,8 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/', productRoutes);
-app.use("/", authRoutes);
+app.use('/', authRoutes);
+app.use('/', userRoutes)
 
 app.use(errorMiddleware);
 
@@ -65,10 +71,12 @@ async function populateProducts() {
   const fileToPopulate = "json/products.json"
   let isFileEmpty = false
 
+  // Check pour pas overwrite
   const data = await fs.readFile("json/products.json", "utf-8");
   if (data.length == 0) {
     isFileEmpty = true
   }
+
   // Mapping pour prendre seulement les données requis
   // Quantity est random pour chaque produit, le fakestoreapi ne contient pas de property pour quantity
   if (isFileEmpty) {
@@ -94,9 +102,54 @@ async function populateProducts() {
   } else {
     console.log("Products.json déja populé")
   }
+}
+async function populateAndHashUsers() {
+  const url = "https://fakestoreapi.com/users/"
+  const fileToPopulate = "json/users.json"
+  let isFileEmpty = false
 
+  // Check pour pas overwrite
+  const data = await fs.readFile("json/users.json", "utf-8");
+  if (data.length == 0) {
+    isFileEmpty = true
+  }
+
+  // Mapping pour prendre seulement les données requis
+  // Quantity est random pour chaque produit, le fakestoreapi ne contient pas de property pour quantity
+  if (isFileEmpty) {
+    try {
+      const response = await fetch(url);
+      const value = await response.json();
+      const users: User[] = await Promise.all(value.map(async (item: any) => {
+        let password = await bcrypt.hash(item.password, 10)
+        // Génére role aléatoirement
+        const randomRole = () => {
+          let role;
+          randomInt(100) < 20 ? role = "gestionnaire" : role = "employee";
+          return role;
+        }
+
+        return new UserModel(
+            item.id,
+            item.name.firstname + item.name.lastname,
+            item.email,
+            item.username,
+            password,
+            randomRole()
+          );
+        }));
+
+      fs.writeFile(fileToPopulate, JSON.stringify(users, null, 2))
+      console.log("Users.json populé!")
+    } catch (error) {
+      console.log(error) 
+    }
+  } else {
+    console.log("Users.json déja populé")
+  }
 }
 populateProducts();
+populateAndHashUsers();
 
 const httpApp = https.createServer(certificatOptions, app);
 

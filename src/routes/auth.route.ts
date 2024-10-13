@@ -1,33 +1,27 @@
 import { Router } from 'express';
-import { ProductController } from '../controllers/product.controller';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import { User } from '../interfaces/user.interface';
-import { UserModel } from '../models/user.model';
+import { AuthService } from '../services/auth.service.ts';
+import { logger } from '../utils/logger.ts'
 
 const router = Router();
 
-const newUser = new UserModel(
-    1,                       
-    'John Doe',               
-    'john.doe@example.com',   
-    'john_doe',               
-    '$2a$12$6IXVSpF/axEflfXJA6MOruFReKlWEbkebqf.xiVleM2VrESpvHcvy',
-    'manager'                   
-  );
-
-const users: User[] = [newUser]; // Simuler une base de données en mémoire
-
 router.post('/users/login', async (req, res) => {
-    const user = users.find(user => user.username === req.body.username);
-    if (user && await bcrypt.compare(req.body.password, user.password)) {
-        const accessToken = jwt.sign({ username: user.username }, 'SECRET_KEY', 
-            { expiresIn: '1h' }
-        );
-        res.json({ accessToken });
-    } else {
-        res.status(403).send('Nom d’utilisateur ou mot de passe incorrect');
+    if (!req.body.username || !req.body.password) {
+        return res.status(400).send("Donnees manquantes");
+    }
+
+    try {
+        const token = await AuthService.login(req.body.username, req.body.password);
+        
+        if (token) {
+            return res.json({ token });
+        } else {
+            return res.status(401).send('Nom d’utilisateur ou mot de passe incorrect');
+        }
+    } catch (error) {
+        logger.error("Login error", error);
+        return res.status(500).send("Erreur du serveur");
     }
 });
+
 
 export default router;
