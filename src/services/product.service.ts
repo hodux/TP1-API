@@ -13,20 +13,21 @@ export class ProductService {
         const data = await fs.readFile("json/products.json", "utf-8");
         const result = JSON.parse(data);
 
-        // Ajout automatique de id
-        newProduct.id = result.length + 1;
+        try {
+            // Ajout automatique de id
+            newProduct.id = result.length + 1;
 
-        result.push(newProduct);
-        await fs.writeFile("json/products.json", JSON.stringify(result, null, 2));
+            result.push(newProduct);
+            await fs.writeFile("json/products.json", JSON.stringify(result, null, 2));
+        } catch (error) {
+            throw new Error();
+        }
+
     }
 
     public static async modifyProductFromId(requestedId : any, newProduct: IProduct): Promise<void> {
         const data = await fs.readFile("json/products.json", "utf-8");
         const result = JSON.parse(data);
-
-        if (!newProduct) {
-            throw { status: 400 };
-        }
 
         try {
             const product = result.find((b : any) => b.id === parseInt(requestedId));
@@ -39,7 +40,7 @@ export class ProductService {
     
             await fs.writeFile("json/products.json", JSON.stringify(result, null, 2));
         } catch (error) {
-            throw { status: 404 };
+            throw new Error();
         }
 
     }

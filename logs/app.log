@@ -1,0 +1,23 @@
+{"level":"warn","message":"Error middleware: SyntaxError: Unexpected token 'a', \"awd\" is not valid JSON\n    at JSON.parse (<anonymous>)\n    at createStrictSyntaxError (C:\\Users\\lain\\Desktop\\TP1-API\\node_modules\\body-parser\\lib\\types\\json.js:172:10)\n    at parse (C:\\Users\\lain\\Desktop\\TP1-API\\node_modules\\body-parser\\lib\\types\\json.js:87:15)\n    at C:\\Users\\lain\\Desktop\\TP1-API\\node_modules\\body-parser\\lib\\read.js:131:18\n    at AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    at invokeCallback (C:\\Users\\lain\\Desktop\\TP1-API\\node_modules\\raw-body\\index.js:238:16)\n    at done (C:\\Users\\lain\\Desktop\\TP1-API\\node_modules\\raw-body\\index.js:227:7)\n    at IncomingMessage.onEnd (C:\\Users\\lain\\Desktop\\TP1-API\\node_modules\\raw-body\\index.js:287:7)\n    at IncomingMessage.emit (node:events:519:28)\n    at endReadableNT (node:internal/streams/readable:1696:12)","timestamp":"2024-10-14T01:20:03.779Z"}
+{"level":"info","message":"GET Users: Succès","timestamp":"2024-10-14T01:20:06.752Z"}
+{"level":"info","message":"PUT Produit: Succès","timestamp":"2024-10-14T01:20:10.984Z"}
+{"level":"info","message":"PUT Produit: Succès","timestamp":"2024-10-14T01:20:14.113Z"}
+{"level":"warn","message":"PUT Produits: Requête invalide","timestamp":"2024-10-14T01:20:16.588Z"}
+{"level":"info","message":"PUT Produit: Succès","timestamp":"2024-10-14T01:20:18.602Z"}
+{"level":"warn","message":"PUT Produits: Requête invalide","timestamp":"2024-10-14T01:20:21.519Z"}
+{"level":"warn","message":"Error middleware: SyntaxError: Expected ',' or '}' after property value in JSON at position 128\n    at JSON.parse (<anonymous>)\n    at parse (C:\\Users\\lain\\Desktop\\TP1-API\\node_modules\\body-parser\\lib\\types\\json.js:93:19)\n    at C:\\Users\\lain\\Desktop\\TP1-API\\node_modules\\body-parser\\lib\\read.js:131:18\n    at AsyncResource.runInAsyncScope (node:async_hooks:206:9)\n    at invokeCallback (C:\\Users\\lain\\Desktop\\TP1-API\\node_modules\\raw-body\\index.js:238:16)\n    at done (C:\\Users\\lain\\Desktop\\TP1-API\\node_modules\\raw-body\\index.js:227:7)\n    at IncomingMessage.onEnd (C:\\Users\\lain\\Desktop\\TP1-API\\node_modules\\raw-body\\index.js:287:7)\n    at IncomingMessage.emit (node:events:519:28)\n    at endReadableNT (node:internal/streams/readable:1696:12)\n    at processTicksAndRejections (node:internal/process/task_queues:82:21)","timestamp":"2024-10-14T01:20:26.076Z"}
+{"level":"info","message":"PUT Produit: Succès","timestamp":"2024-10-14T01:20:30.297Z"}
+{"level":"info","message":"DELETE Produit: Succès","timestamp":"2024-10-14T01:20:34.362Z"}
+{"level":"warn","message":"DELETE Produits: Produit non trouvé","stack":"Error: \n    at Function.deleteProductFromId (C:\\Users\\lain\\Desktop\\TP1-API\\src\\services\\product.service.ts:58:19)\n    at deleteProductById (C:\\Users\\lain\\Desktop\\TP1-API\\src\\controllers\\product.controller.ts:99:13)","timestamp":"2024-10-14T01:20:36.046Z"}
+{"level":"info","message":"POST Auth: Succès","timestamp":"2024-10-14T01:23:28.222Z"}
+{"level":"warn","message":"POST Auth: Format email invalid","timestamp":"2024-10-14T01:23:33.630Z"}
+{"level":"info","message":"POST Auth: Succès","timestamp":"2024-10-14T01:23:38.342Z"}
+{"level":"warn","message":"POST Auth: Mauvais nom d'utilisateur or mot de passe incorrect","timestamp":"2024-10-14T01:23:42.788Z"}
+{"level":"warn","message":"POST Auth: Mauvais nom d'utilisateur or mot de passe incorrect","timestamp":"2024-10-14T01:23:49.318Z"}
+{"level":"info","message":"GET Users: Succès","timestamp":"2024-10-14T01:36:50.696Z"}
+{"level":"info","message":"POST Auth: Succès","timestamp":"2024-10-14T01:37:37.366Z"}
+{"level":"info","message":"GET Produits: Succès","timestamp":"2024-10-14T01:37:42.406Z"}
+{"level":"info","message":"GET Users: Succès","timestamp":"2024-10-14T01:38:47.369Z"}
+{"level":"info","message":"GET Produits: Succès","timestamp":"2024-10-14T01:40:36.848Z"}
+{"level":"warn","message":"Roles middleware: Accès refusé","timestamp":"2024-10-14T01:40:40.223Z"}
+{"level":"warn","message":"Auth middleware: 'Accès interdit. Aucun token fourni.","timestamp":"2024-10-14T01:40:48.118Z"}

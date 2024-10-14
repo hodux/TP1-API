@@ -27,10 +27,70 @@ const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'User API',
+      title: 'TP1 - Products and User Auth API',
       version: '1.0.0',
-      description: 'A simple API to manage users',
+      description: 'Un API pour gérer les produits avec authentification JWT',
     },
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+      schemas: {
+        User: {
+          type: 'object',
+          properties: {
+            email: {
+              type: 'string',
+            },
+            id: {
+              type: 'number',
+            },
+            name: {
+              type: 'string',
+            },
+            password: {
+              type: 'string',
+            },
+            role: {
+              type: 'any',
+            },
+            username: {
+              type: 'string',
+            },
+          },
+          required: ['email', 'id', 'name', 'password', 'username'],
+        },
+        Product: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'number',
+            },
+            name: {
+              type: 'string',
+            },
+            description: {
+              type: 'string',
+            },
+            category: {
+              type: 'string',
+            },
+            quantity: {
+              type: 'number',
+            },
+            price: {
+              type: 'number',
+            },
+          },
+          required: ['id', 'name', 'description', 'category', 'quantity', 'price'],
+        },
+      },
+    },
+    security: [],
   },
   apis: ['./src/routes/*.route.ts'], // Fichier où les routes de l'API sont définies
 };

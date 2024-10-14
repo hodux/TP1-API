@@ -3,32 +3,26 @@ import { UserController } from '../controllers/user.controller';
 
 const router = Router();
 
-// /**
-//  * @swagger
-//  * /api/users:
-//  *   get:
-//  *     summary: Retrieve a list of users
-//  *     description: Retrieve a list of users from the API. Can be used to populate a list of users in your system.
-//  *     responses:
-//  *       200:
-//  *         description: A list of users.
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               type: array
-//  *               items:
-//  *                 type: object
-//  *                 properties:
-//  *                  id:
-//  *                     type: integer
-//  *                     example: 1
-//  *                  name:
-//  *                     type: string
-//  *                     example: John Doe
-//  *                  mail:
-//  *                     type: string
-//  *                     example : john.doe@example.com
-//  */
+/**
+ * @openapi
+ * /users:
+ *   get:
+ *     summary: Récupérer une liste d'utilisateurs
+ *     description: Permet de récupérer tous les utilisateurs
+ *     responses:
+ *       200:
+ *         description: Une liste d'utilisateurs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Requête invalide
+ *     tags:
+ *       - Utilisateurs
+ */
 router.get('/users', UserController.getAllUsers);
 
 export default router;

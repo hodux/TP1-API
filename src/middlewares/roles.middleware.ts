@@ -1,10 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
+import { logger } from '../utils/logger'
 
 export function roleMiddleware(roles: string[]) {
   return (req: Request, res: Response, next: NextFunction) => {
-    const userRole = req.body?.role;
+    let userRole = req.body.user?.role;
+    
+    // Regarder auth.middleware pour comprendre
+    if(req.method == "DELETE") {
+      userRole = req.body?.role;
+    }
+
     if (!roles.includes(userRole)) {
-      return res.status(403).json({ message: 'Accès interdit.' });
+      logger.warn("Roles middleware: Accès refusé")
+      return res.status(403).json({ message: "Accès refusé. Vous n'êtes pas gestionnaire" });
     }
     next();
   };
