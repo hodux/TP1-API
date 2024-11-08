@@ -211,8 +211,9 @@ async function populateAndHashUsers() {
 populateProducts();
 populateAndHashUsers();
 
-const httpsApp = app
+// const httpsApp = https.createServer(certificatOptions, app);
+const httpApp = app;
 
-export default httpsApp;
+export default httpApp
 
 
